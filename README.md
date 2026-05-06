@@ -169,6 +169,6 @@ Feel free to fork this repo and submit a pull request.
 
 ## 👩‍💻 Author
 
-Chitra Rathpre
+Chitra Rathore
 
 ---
