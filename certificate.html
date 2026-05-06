@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>
+      Certificate Generator - Mahila Engineering College Ajmer
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- QR Code Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+    <!-- PDF Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <style>
+      body {
+        font-family: "Georgia", serif;
+        background: #f2f2f2;
+      }
+
+      .certificate-box {
+        width: 900px;
+        margin: 30px auto;
+        padding: 20px;
+        background: #fff;
+        border: 12px double #2c3e50;
+        display: none;
+        position: relative;
+      }
+
+      .certificate-header {
+        text-align: center;
+      }
+
+      .certificate-header img {
+        width: 100px;
+      }
+
+      .certificate-title {
+        font-size: 36px;
+        font-weight: bold;
+        margin-top: 10px;
+      }
+
+      .college-name {
+        font-size: 22px;
+        font-weight: bold;
+        margin-bottom: 20px;
+      }
+
+      .certificate-body {
+        text-align: center;
+        font-size: 22px;
+        margin: 30px 0;
+        line-height: 1.6;
+      }
+
+      .highlight {
+        font-weight: bold;
+        font-size: 26px;
+        color: #000;
+      }
+
+      .certificate-footer {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 50px;
+        font-size: 18px;
+      }
+
+      .actions {
+        text-align: center;
+        margin-top: 25px;
+      }
+
+      .actions button {
+        padding: 12px 25px;
+        background: #2c3e50;
+        color: white;
+        font-size: 16px;
+        border: none;
+        margin: 5px;
+        cursor: pointer;
+      }
+
+      .generator-form {
+        text-align: center;
+        margin: 30px;
+      }
+
+      .generator-form input {
+        padding: 10px;
+        width: 300px;
+        margin: 5px;
+      }
+
+      /* ✅ QR CODE STYLE */
+      #qrCode {
+        position: absolute;
+        top: 40px;
+        right: 40px;
+        padding: 8px;
+        background: #fff;
+        border: 2px solid #000;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ✅ Generator Form -->
+    <div class="generator-form">
+      <h2>Generate Your Certificate</h2>
+      <input
+        type="text"
+        id="studentName"
+        placeholder="Enter Student Name"
+        required
+      /><br />
+      <select id="eventName" required style="padding:10px; width:316px; margin:5px; border:1px solid #ccc; border-radius:4px; font-size:14px;">
+        <option value="">-- Select Event --</option>
+        <option value="Tech Fest 2024">Tech Fest 2024</option>
+        <option value="Cultural Night">Cultural Night</option>
+        <option value="Sports Tournament">Sports Tournament</option>
+      </select><br />
+      <button onclick="generateCertificate()">Generate Certificate</button>
+    </div>
+
+    <!-- ✅ Certificate -->
+    <div id="certificate" class="certificate-box">
+      <div class="certificate-header">
+        <img src="https://www.gweca.ac.in/assets/latest_logo-CERg6eCh.png" />
+        <div class="certificate-title">CERTIFICATE OF PARTICIPATION</div>
+        <div class="college-name">
+          Mahila Engineering College Ajmer
+        </div>
+      </div>
+
+      <!-- ✅ QR Code Box -->
+
+      <div id="qrCode"></div>
+
+      <div class="certificate-body">
+        This is proudly presented to<br />
+        <span class="highlight" id="certStudentName">Student Name</span><br />
+        for successfully participating in<br />
+        <span class="highlight" id="certEventName">Event Name</span><br />
+        held at Mahila Engineering College Ajmer.
+      </div>
+
+      <div class="certificate-footer">
+        <div>
+          <b>Principal</b><br />
+          Prof. Prakriti Trivedi
+        </div>
+        <div>
+          <b>Certificate ID</b><br />
+          <span id="certId">CERT-0000</span>
+        </div>
+        <div>
+          <b>Date</b><br />
+          <span id="certDate">01/01/2025</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ✅ Buttons -->
+    <div class="actions" id="actionButtons" style="display: none">
+      <button onclick="downloadPDF()">Download PDF</button>
+      <button onclick="printCertificate()">Print</button>
+    </div>
+
+    <script>
+      function generateCertificate() {
+        const name = document.getElementById("studentName").value;
+        const eventName = document.getElementById("eventName").value;
+
+        if (!name || !eventName) {
+          alert("Please enter student name and event name.");
+          return;
+        }
+
+        const certId = "GWECA-" + Math.floor(100000 + Math.random() * 900000);
+        const today = new Date().toLocaleDateString();
+
+        document.getElementById("certStudentName").innerText = name;
+        document.getElementById("certEventName").innerText = eventName;
+        document.getElementById("certId").innerText = certId;
+        document.getElementById("certDate").innerText = today;
+
+        // ✅ Show certificate
+        document.getElementById("certificate").style.display = "block";
+        document.getElementById("actionButtons").style.display = "block";
+
+        // ✅ Generate QR Code
+        document.getElementById("qrCode").innerHTML = "";
+        const verifyUrl = `https://gweca.ac.in/verify.html?name=${encodeURIComponent(
+          name,
+        )}&event=${encodeURIComponent(eventName)}&id=${certId}`;
+
+        new QRCode(document.getElementById("qrCode"), {
+          text: verifyUrl,
+          width: 120,
+          height: 120,
+        });
+      }
+
+      function downloadPDF() {
+        html2canvas(document.querySelector("#certificate")).then((canvas) => {
+          const imgData = canvas.toDataURL("image/png");
+          const pdf = new jspdf.jsPDF("landscape", "px", "a4");
+
+          const width = pdf.internal.pageSize.getWidth();
+          const height = (canvas.height * width) / canvas.width;
+
+          pdf.addImage(imgData, "PNG", 0, 0, width, height);
+          pdf.save("certificate.pdf");
+        });
+      }
+
+      function printCertificate() {
+        const printContent = document.getElementById("certificate").innerHTML;
+        const originalContent = document.body.innerHTML;
+
+        document.body.innerHTML = printContent;
+        window.print();
+        document.body.innerHTML = originalContent;
+      }
+    </script>
+  </body>
+</html>

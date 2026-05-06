@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Login - Mahila Engineering College Ajmer Event Portal</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 40%, #0f3460 70%, #533483 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Animated background circles */
+  body::before, body::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    animation: float 8s ease-in-out infinite;
+  }
+  body::before {
+    width: 300px; height: 300px;
+    background: rgba(52, 152, 219, 0.15);
+    top: -80px; left: -80px;
+  }
+  body::after {
+    width: 200px; height: 200px;
+    background: rgba(83, 52, 131, 0.2);
+    bottom: -60px; right: -60px;
+    animation-delay: -4s;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(180deg); }
+  }
+
+  .login-container {
+    display: flex;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.4);
+    overflow: hidden;
+    width: 850px;
+    max-width: 95vw;
+    animation: slideUp 0.6s ease;
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Left panel */
+  .login-banner {
+    background: linear-gradient(160deg, #2c3e50, #3498db);
+    color: white;
+    padding: 50px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    flex: 1;
+  }
+
+  .login-banner img {
+    width: 100px; height: 100px;
+    object-fit: contain;
+    border-radius: 50%;
+    border: 3px solid rgba(255,255,255,0.4);
+    margin-bottom: 20px;
+    background: white;
+    padding: 8px;
+  }
+
+  .login-banner h2 { font-size: 1.4rem; margin-bottom: 10px; line-height: 1.4; }
+  .login-banner p { font-size: 0.9rem; opacity: 0.8; margin-bottom: 30px; }
+
+  .banner-features { list-style: none; text-align: left; }
+  .banner-features li {
+    padding: 8px 0;
+    font-size: 0.85rem;
+    opacity: 0.9;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .banner-features li i { color: #f39c12; font-size: 1rem; }
+
+  /* Right panel - form */
+  .form-panel {
+    padding: 50px 40px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .form-panel h2 {
+    font-size: 1.8rem;
+    color: #2c3e50;
+    margin-bottom: 6px;
+  }
+  .form-panel .subtitle {
+    color: #7f8c8d;
+    font-size: 0.9rem;
+    margin-bottom: 30px;
+  }
+
+  .tabs {
+    display: flex;
+    background: #f0f4f8;
+    border-radius: 10px;
+    padding: 4px;
+    margin-bottom: 28px;
+  }
+  .tab-btn {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    background: transparent;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    color: #7f8c8d;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: 500;
+  }
+  .tab-btn.active {
+    background: white;
+    color: #3498db;
+    box-shadow: 0 2px 8px rgba(52,152,219,0.2);
+  }
+
+  .form-group {
+    position: relative;
+    margin-bottom: 20px;
+  }
+  .form-group label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 6px;
+  }
+  .input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  .input-wrapper i.prefix {
+    position: absolute;
+    left: 14px;
+    color: #bdc3c7;
+    font-size: 0.95rem;
+    pointer-events: none;
+  }
+  .input-wrapper input,
+  .input-wrapper select {
+    width: 100%;
+    padding: 13px 14px 13px 40px;
+    border: 2px solid #e8ecef;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    color: #2c3e50;
+    transition: all 0.3s;
+    outline: none;
+    appearance: none;
+    background: white;
+  }
+  .input-wrapper input:focus,
+  .input-wrapper select:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 0 4px rgba(52,152,219,0.12);
+  }
+  .input-wrapper .toggle-pass {
+    position: absolute;
+    right: 14px;
+    color: #bdc3c7;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: color 0.3s;
+  }
+  .input-wrapper .toggle-pass:hover { color: #3498db; }
+
+  /* Role selector */
+  .role-selector {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .role-card {
+    flex: 1;
+    padding: 12px 8px;
+    border: 2px solid #e8ecef;
+    border-radius: 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 0.8rem;
+    color: #7f8c8d;
+  }
+  .role-card i { display: block; font-size: 1.4rem; margin-bottom: 6px; color: #bdc3c7; transition: color 0.3s; }
+  .role-card:hover, .role-card.active {
+    border-color: #3498db;
+    background: #ebf5fb;
+    color: #2c3e50;
+  }
+  .role-card:hover i, .role-card.active i { color: #3498db; }
+
+  .login-btn {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    letter-spacing: 0.5px;
+    position: relative;
+    overflow: hidden;
+  }
+  .login-btn:hover {
+    background: linear-gradient(135deg, #2980b9, #1a5276);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(52,152,219,0.4);
+  }
+  .login-btn:active { transform: translateY(0); }
+
+  .divider {
+    text-align: center;
+    color: #bdc3c7;
+    font-size: 0.85rem;
+    margin: 18px 0;
+    position: relative;
+  }
+  .divider::before, .divider::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 40%;
+    height: 1px;
+    background: #e8ecef;
+  }
+  .divider::before { left: 0; }
+  .divider::after { right: 0; }
+
+  .register-link {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #7f8c8d;
+  }
+  .register-link a { color: #3498db; font-weight: 600; text-decoration: none; }
+  .register-link a:hover { text-decoration: underline; }
+
+  .alert {
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    margin-bottom: 16px;
+    display: none;
+    align-items: center;
+    gap: 10px;
+  }
+  .alert.error   { background: #fdedec; color: #c0392b; border: 1px solid #f1948a; }
+  .alert.success { background: #eafaf1; color: #1e8449; border: 1px solid #82e0aa; }
+  .alert.show { display: flex; }
+
+  /* Quick demo credentials */
+  .demo-creds {
+    background: #fef9e7;
+    border: 1px solid #f9e79f;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 0.8rem;
+    color: #7d6608;
+    margin-bottom: 20px;
+  }
+  .demo-creds strong { display: block; margin-bottom: 4px; color: #6e2f02; }
+
+  @media (max-width: 640px) {
+    .login-banner { display: none; }
+    .form-panel { padding: 40px 28px; }
+    .login-container { width: 100%; border-radius: 0; min-height: 100vh; }
+  }
+</style>
+</head>
+<body>
+
+<div class="login-container">
+  <!-- Left Banner -->
+  <div class="login-banner">
+    <img src="gweca-logo.png" alt="MECA Logo" onerror="this.src='https://via.placeholder.com/100x100/3498db/ffffff?text=MECA'" />
+    <h2>Mahila Engineering College Ajmer</h2>
+    <p>Event Management Portal</p>
+    <ul class="banner-features">
+      <li><i class="fas fa-calendar-check"></i> Easy Event Registration</li>
+      <li><i class="fas fa-certificate"></i> Auto Certificate Generation</li>
+      <li><i class="fas fa-robot"></i> AI Assistant Support</li>
+      <li><i class="fas fa-shield-alt"></i> Secure &amp; Verified Access</li>
+    </ul>
+  </div>
+
+  <!-- Right Form Panel -->
+  <div class="form-panel">
+    <h2>Welcome Back 👋</h2>
+    <p class="subtitle">Sign in to access the event portal</p>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('login', this)">Sign In</button>
+      <button class="tab-btn" onclick="switchTab('register', this)">Register</button>
+    </div>
+
+    <!-- Alert -->
+    <div class="alert error" id="alertBox"><i class="fas fa-exclamation-circle"></i><span id="alertMsg"></span></div>
+
+    <!-- LOGIN FORM -->
+    <div id="loginSection">
+      <div class="demo-creds">
+        <strong>💡 Demo Credentials:</strong>
+        Username: <b>student</b> &nbsp;|&nbsp; Password: <b>1234</b>
+      </div>
+
+      <p style="font-size:0.85rem; color:#7f8c8d; margin-bottom:12px; font-weight:600;">Select your role:</p>
+      <div class="role-selector">
+        <div class="role-card active" onclick="selectRole('student', this)">
+          <i class="fas fa-user-graduate"></i>Student
+        </div>
+        <div class="role-card" onclick="selectRole('organizer', this)">
+          <i class="fas fa-user-tie"></i>Organizer
+        </div>
+        <div class="role-card" onclick="selectRole('admin', this)">
+          <i class="fas fa-user-shield"></i>Admin
+        </div>
+      </div>
+
+      <form id="loginForm" onsubmit="handleLogin(event)">
+        <input type="hidden" id="selectedRole" value="student" />
+        <div class="form-group">
+          <label for="loginName">Username / Email</label>
+          <div class="input-wrapper">
+            <i class="fas fa-user prefix"></i>
+            <input type="text" id="loginName" placeholder="Enter your username" required />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="loginPassword">Password</label>
+          <div class="input-wrapper">
+            <i class="fas fa-lock prefix"></i>
+            <input type="password" id="loginPassword" placeholder="Enter your password" required />
+            <i class="fas fa-eye toggle-pass" onclick="togglePassword('loginPassword', this)"></i>
+          </div>
+        </div>
+        <button type="submit" class="login-btn">
+          <i class="fas fa-sign-in-alt"></i> &nbsp;Sign In
+        </button>
+      </form>
+      <div class="divider">or</div>
+      <div class="register-link">Don't have an account? <a href="#" onclick="switchTab('register', document.querySelectorAll('.tab-btn')[1])">Register here</a></div>
+    </div>
+
+    <!-- REGISTER FORM -->
+    <div id="registerSection" style="display:none;">
+      <form id="registerForm" onsubmit="handleRegister(event)">
+        <div class="form-group">
+          <label for="regName">Full Name</label>
+          <div class="input-wrapper">
+            <i class="fas fa-user prefix"></i>
+            <input type="text" id="regName" placeholder="Your full name" required />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="regEmail">Email</label>
+          <div class="input-wrapper">
+            <i class="fas fa-envelope prefix"></i>
+            <input type="email" id="regEmail" placeholder="your@email.com" required />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="regPass">Password</label>
+          <div class="input-wrapper">
+            <i class="fas fa-lock prefix"></i>
+            <input type="password" id="regPass" placeholder="Create a password" required />
+            <i class="fas fa-eye toggle-pass" onclick="togglePassword('regPass', this)"></i>
+          </div>
+        </div>
+        <button type="submit" class="login-btn" style="background:linear-gradient(135deg,#27ae60,#1e8449);">
+          <i class="fas fa-user-plus"></i> &nbsp;Create Account
+        </button>
+      </form>
+      <div class="divider">or</div>
+      <div class="register-link">Already have an account? <a href="#" onclick="switchTab('login', document.querySelectorAll('.tab-btn')[0])">Sign in</a></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  let selectedRole = 'student';
+
+  function switchTab(tab, btn) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('loginSection').style.display = tab === 'login' ? 'block' : 'none';
+    document.getElementById('registerSection').style.display = tab === 'register' ? 'block' : 'none';
+    hideAlert();
+  }
+
+  function selectRole(role, card) {
+    document.querySelectorAll('.role-card').forEach(c => c.classList.remove('active'));
+    card.classList.add('active');
+    selectedRole = role;
+    document.getElementById('selectedRole').value = role;
+  }
+
+  function togglePassword(id, icon) {
+    const inp = document.getElementById(id);
+    if (inp.type === 'password') {
+      inp.type = 'text';
+      icon.classList.replace('fa-eye', 'fa-eye-slash');
+    } else {
+      inp.type = 'password';
+      icon.classList.replace('fa-eye-slash', 'fa-eye');
+    }
+  }
+
+  function showAlert(msg, type='error') {
+    const box = document.getElementById('alertBox');
+    document.getElementById('alertMsg').textContent = msg;
+    box.className = 'alert ' + type + ' show';
+  }
+  function hideAlert() {
+    document.getElementById('alertBox').className = 'alert error';
+  }
+
+  function handleLogin(e) {
+    e.preventDefault();
+    const name = document.getElementById('loginName').value.trim();
+    const pass = document.getElementById('loginPassword').value;
+
+    const savedName = localStorage.getItem('registeredUser');
+    const savedPass = localStorage.getItem('registeredPass');
+
+    // Accept demo or registered user
+    if ((name === 'student' && pass === '1234') ||
+        (name === savedName && pass === savedPass) ||
+        (name === 'admin' && pass === 'admin123') ||
+        (name === 'organizer' && pass === 'org123')) {
+      localStorage.setItem('loggedInUser', name);
+      showAlert('Login successful! Redirecting...', 'success');
+      setTimeout(() => { window.location.href = 'index.html'; }, 1200);
+    } else {
+      showAlert('Invalid username or password. Try demo: student / 1234');
+    }
+  }
+
+  function handleRegister(e) {
+    e.preventDefault();
+    const name = document.getElementById('regName').value.trim();
+    const email = document.getElementById('regEmail').value.trim();
+    const pass = document.getElementById('regPass').value;
+    if (pass.length < 4) { showAlert('Password must be at least 4 characters.'); return; }
+    localStorage.setItem('registeredUser', name);
+    localStorage.setItem('registeredPass', pass);
+    localStorage.setItem('registeredEmail', email);
+    showAlert('Account created! You can now sign in.', 'success');
+    setTimeout(() => switchTab('login', document.querySelectorAll('.tab-btn')[0]), 1500);
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Panel - Mahila Mahila Mahila Engineering College Ajmer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="styles.css">
+
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f6f9; }
+
+        .login-box {
+            max-width: 400px;
+            margin: 80px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #2c3e50;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .admin-panel {
+            display: none;
+            padding: 30px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #2c3e50;
+            color: white;
+        }
+
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); }
+
+        .modal-content {
+            background: white;
+            width: 400px;
+            margin: 80px auto;
+            padding: 20px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ✅ ADMIN LOGIN -->
+<div class="login-box" id="adminLoginBox">
+    <h2>Admin Login</h2>
+    <input type="text" id="adminUsername" placeholder="Admin Username">
+    <input type="password" id="adminPassword" placeholder="Admin Password">
+    <button onclick="adminLogin()">Login</button>
+</div>
+
+<!-- ✅ ADMIN PANEL (Hidden until login) -->
+<div class="admin-panel" id="adminPanel">
+    <h1>Admin Dashboard</h1>
+    <button onclick="logoutAdmin()">Logout</button>
+    <br><br>
+
+    <button onclick="openModal()">➕ Add New Event</button>
+
+    <h2>Event List</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Event Name</th>
+                <th>Date</th>
+                <th>Category</th>
+                <th>Location</th>
+                <th>Time</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody id="eventsTableBody"></tbody>
+    </table>
+</div>
+
+<!-- ✅ ADD EVENT MODAL -->
+<div class="modal" id="eventModal">
+    <div class="modal-content">
+        <h3>Add New Event</h3>
+        <input type="text" id="eventName" placeholder="Event Name">
+        <input type="date" id="eventDate">
+        <select id="eventCategory">
+            <option>Technical</option>
+            <option>Cultural</option>
+            <option>Sports</option>
+            <option>Workshop</option>
+        </select>
+        <input type="text" id="eventLocation" placeholder="Event Location">
+        <input type="text" id="eventTime" placeholder="Time">
+        <textarea id="eventDescription" placeholder="Event Description"></textarea>
+
+        <button onclick="saveEvent()">Save Event</button>
+        <button onclick="closeModal()">Close</button>
+    </div>
+</div>
+
+<script>
+/* ✅ FIXED ADMIN CREDENTIALS */
+const ADMIN_USER = "admin";
+const ADMIN_PASS = "admin123";
+
+function adminLogin() {
+    const user = document.getElementById("adminUsername").value;
+    const pass = document.getElementById("adminPassword").value;
+
+    if (user === ADMIN_USER && pass === ADMIN_PASS) {
+        localStorage.setItem("adminLoggedIn", "true");
+        showAdminPanel();
+    } else {
+        alert("Invalid Admin Credentials!");
+    }
+}
+
+function showAdminPanel() {
+    document.getElementById("adminLoginBox").style.display = "none";
+    document.getElementById("adminPanel").style.display = "block";
+    loadEvents();
+}
+
+function logoutAdmin() {
+    localStorage.removeItem("adminLoggedIn");
+    updateUI();
+}
+
+// ✅ Auto check login
+if (localStorage.getItem("adminLoggedIn") === "true") {
+    showAdminPanel();
+}
+
+// ✅ Modal Controls
+function openModal() {
+    document.getElementById("eventModal").style.display = "block";
+}
+
+function closeModal() {
+    document.getElementById("eventModal").style.display = "none";
+}
+
+/* ✅ SAVE EVENT */
+function saveEvent() {
+    const event = {
+        name: document.getElementById("eventName").value,
+        date: document.getElementById("eventDate").value,
+        category: document.getElementById("eventCategory").value,
+        location: document.getElementById("eventLocation").value,
+        time: document.getElementById("eventTime").value,
+        description: document.getElementById("eventDescription").value
+    };
+
+    if (!event.name || !event.date) {
+        alert("Please fill required fields");
+        return;
+    }
+
+    let events = JSON.parse(localStorage.getItem("events")) || [];
+    events.push(event);
+    localStorage.setItem("events", JSON.stringify(events));
+
+    closeModal();
+    loadEvents();
+}
+
+function loadEvents() {
+    const tbody = document.getElementById("eventsTableBody");
+    tbody.innerHTML = "";
+
+    let events = JSON.parse(localStorage.getItem("events")) || [];
+
+    events.forEach(event => {
+        let row = `<tr>
+            <td>${event.name}</td>
+            <td>${event.date}</td>
+            <td>${event.category}</td>
+            <td>${event.location}</td>
+            <td>${event.time}</td>
+            <td>${event.description}</td>
+        </tr>`;
+        tbody.innerHTML += row;
+    });
+}
+</script>
+
+</body>
+</html>

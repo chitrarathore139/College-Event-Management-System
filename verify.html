@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Certificate Verification</title>
+    <meta charset="UTF-8">
+</head>
+<body style="font-family:Arial; background:#f4f6f9; text-align:center; padding:40px;">
+
+<h2>Certificate Verification System</h2>
+
+<div style="background:white; padding:25px; border-radius:8px; display:inline-block; min-width:350px;">
+    <p><b>Student Name:</b> <span id="sname"></span></p>
+    <p><b>Event Name:</b> <span id="sevent"></span></p>
+    <p><b>Certificate ID:</b> <span id="sid"></span></p>
+    <h3 id="status"></h3>
+</div>
+
+<script>
+    const params = new URLSearchParams(window.location.search);
+    const name = params.get("name");
+    const event = params.get("event");
+    const id = params.get("id");
+
+    document.getElementById("sname").innerText = name || "N/A";
+    document.getElementById("sevent").innerText = event || "N/A";
+    document.getElementById("sid").innerText = id || "N/A";
+
+    const records = JSON.parse(localStorage.getItem("certificates")) || [];
+
+    const match = records.find(rec => rec.id === id && rec.name === name && rec.event === event);
+
+    if (match) {
+        document.getElementById("status").innerHTML = "✅ This Certificate is Authentic";
+        document.getElementById("status").style.color = "green";
+    } else {
+        document.getElementById("status").innerHTML = "❌ This Certificate is NOT Valid";
+        document.getElementById("status").style.color = "red";
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>College Event Management System</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Header -->
+    <header>
+      <div class="container">
+        <div class="logo">
+          <img
+            src="gweca-logo.png"
+            alt="Mahila Engineering College Ajmer Logo"
+            onerror="this.src='https://via.placeholder.com/60x60/3498db/ffffff?text=GWECA'"
+          />
+          <div>
+            <h1>Mahila Engineering College Ajmer</h1>
+            <p>Event Management System</p>
+          </div>
+        </div>
+        <nav>
+          <ul>
+            <li><a href="index.html" class="active">Home</a></li>
+            <li><a href="events.html">Events</a></li>
+            <li><a href="admin.html">Admin</a></li>
+            <li><a href="certificate.html">Certificates</a></li>
+            <li><a href="chatbot.html">AI Assistant</a></li>
+            <li><a href="login page.html">Login</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <div
+      id="welcomeUser"
+      style="text-align: right; font-weight: bold; color: #2c3e50"
+    ></div>
+
+    <script>
+      const user = localStorage.getItem("loggedInUser");
+
+      if (user) {
+        document.getElementById("welcomeUser").innerText = "Welcome, " + user;
+      }
+    </script>
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="container">
+        <div class="hero-content">
+          <div class="hero-logo">
+            <img
+              src="gweca-logo.png"
+              alt="GWECA Logo"
+              onerror="this.src='https://via.placeholder.com/150x150/ffffff/3498db?text=GWECA'"
+            />
+          </div>
+          <h1>College Event Management System</h1>
+          <p>
+            Online Event Registration, Certificate Auto-Generation & AI-powered
+            Assistance
+          </p>
+          <div class="cta-buttons">
+            <a href="events.html" class="btn primary">Browse Events</a>
+            <a href="login page.html" class="btn secondary">Register Now</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Partner Logos -->
+    <section class="partners">
+      <div class="container">
+        <h3>In Collaboration With</h3>
+        <div class="partner-logos">
+          <img
+            src="gweca-logo.png"
+            alt="GWECA Logo"
+            onerror="this.src='https://via.placeholder.com/100x60/2c3e50/ffffff?text=RTU'"
+          />
+          <img
+            src="aicte.jpeg"
+            alt="AICTE Logo"
+            onerror="this.src='https://via.placeholder.com/100x60/2c3e50/ffffff?text=AICTE'"
+          />
+          <img
+            src="naac.jpeg"
+            alt="NAAC Logo"
+            onerror="this.src='https://via.placeholder.com/100x60/2c3e50/ffffff?text=UGC'"
+          />
+          <img
+            src="nba.jpeg"
+            alt="NBA Logo"
+            onerror="this.src='https://via.placeholder.com/100x60/2c3e50/ffffff?text=NBA'"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+      <div class="container">
+        <h2>Key Features</h2>
+        <div class="feature-grid">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <img
+                src="https://img.freepik.com/free-photo/register-now-document-filling-form-concept_53876-125596.jpg?semt=ais_hybrid&w=740&q=80"
+                alt="Registration"
+                onerror="this.src='https://via.placeholder.com/80x80/3498db/ffffff?text=📝'"
+              />
+            </div>
+            <h3>Online Registration</h3>
+            <p>Easy event registration with just a few clicks</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">
+              <img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYbCV0qDhehJFyajO8gFOIxIUV-17aX5YtLA&s"
+                alt="Certificate"
+                onerror="this.src='https://via.placeholder.com/80x80/3498db/ffffff?text=📜'"
+              />
+            </div>
+            <h3>Auto Certificate Generation</h3>
+            <p>Automatically generate certificates with QR codes</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">
+              <img
+                src=""
+                alt="AI Chatbot"
+                onerror="this.src='https://via.placeholder.com/80x80/3498db/ffffff?text=🤖'"
+              />
+            </div>
+            <h3>AI Chatbot</h3>
+            <p>Get instant answers to your event-related questions</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Upcoming Events -->
+    <section class="upcoming-events">
+      <div class="container">
+        <h2>Upcoming Events</h2>
+        <div class="department-logos">
+          <div class="dept-logo">
+            <img
+              src=""
+              alt="CSE Department"
+              onerror="this.src='https://via.placeholder.com/60x60/3498db/ffffff?text=CSE'"
+            />
+            <span>Computer Science</span>
+          </div>
+          <div class="dept-logo">
+            <img
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPC8wakupMCbtM2yIQ_ahIlPQKxoX4MecUlQ&s"
+              alt="EC Department"
+              onerror="this.src='https://via.placeholder.com/60x60/3498db/ffffff?text=EC'"
+            />
+            <span>Electronics</span>
+          </div>
+          <div class="dept-logo">
+            <img
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYWl2NBzuwhV6n93Eab00AI12AgyYWiIgp2A&s"
+              alt="Mechanical Department"
+              onerror="this.src='https://via.placeholder.com/60x60/3498db/ffffff?text=MECH'"
+            />
+            <span>Mechanical</span>
+          </div>
+          <div class="dept-logo">
+            <img
+              src=""
+              alt="Civil Department"
+              onerror="this.src='https://via.placeholder.com/60x60/3498db/ffffff?text=CIVIL'"
+            />
+            <span>Civil</span>
+          </div>
+        </div>
+        <div class="events-grid">
+          <div class="event-card">
+            <div class="event-date">
+              <span class="day">15</span>
+              <span class="month">NOV</span>
+            </div>
+            <div class="event-info">
+              <div class="event-dept">
+                <img
+                  src="assets/icons/cse-dept.png"
+                  alt="CSE"
+                  onerror="this.src='https://via.placeholder.com/30x30/3498db/ffffff?text=CSE'"
+                />
+                <span>Computer Science Dept</span>
+              </div>
+              <h3>Tech Fest 2023</h3>
+              <p><i class="fas fa-map-marker-alt"></i> Main Auditorium</p>
+              <p><i class="fas fa-clock"></i> 10:00 AM - 4:00 PM</p>
+              <button class="btn small register-event-btn" data-event-id="1">
+                Register
+              </button>
+            </div>
+          </div>
+          <div class="event-card">
+            <div class="event-date">
+              <span class="day">20</span>
+              <span class="month">NOV</span>
+            </div>
+            <div class="event-info">
+              <div class="event-dept">
+                <img
+                  src="assets/icons/ec-dept.png"
+                  alt="EC"
+                  onerror="this.src='https://via.placeholder.com/30x30/3498db/ffffff?text=EC'"
+                />
+                <span>Electronics Dept</span>
+              </div>
+              <h3>Cultural Night</h3>
+              <p><i class="fas fa-map-marker-alt"></i> College Ground</p>
+              <p><i class="fas fa-clock"></i> 6:00 PM - 10:00 PM</p>
+              <button class="btn small register-event-btn" data-event-id="2">
+                Register
+              </button>
+            </div>
+          </div>
+          <div class="event-card">
+            <div class="event-date">
+              <span class="day">25</span>
+              <span class="month">NOV</span>
+            </div>
+            <div class="event-info">
+              <div class="event-dept">
+                <img
+                  src="assets/icons/mech-dept.png"
+                  alt="MECH"
+                  onerror="this.src='https://via.placeholder.com/30x30/3498db/ffffff?text=MECH'"
+                />
+                <span>Mechanical Dept</span>
+              </div>
+              <h3>Sports Tournament</h3>
+              <p><i class="fas fa-map-marker-alt"></i> Sports Complex</p>
+              <p><i class="fas fa-clock"></i> 9:00 AM - 5:00 PM</p>
+              <button class="btn small register-event-btn" data-event-id="3">
+                Register
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="view-all">
+          <a href="events.html" class="btn primary">View All Events</a>
+        </div>
+      </div>
+    </section>
+    
+
+    <!-- Team Section -->
+    <section class="team">
+      <div class="container">
+        <h2>Development Team</h2>
+        <div class="team-grid">
+          <div class="team-member">
+            <div class="member-img">
+              <img src="gweca-logo.png" alt="Chitra Rathore"
+                onerror="this.src='https://via.placeholder.com/150x150/3498db/ffffff?text=CR'" />
+            </div>
+            <h3>Chitra Rathore</h3>
+            <p><strong>Team Leader</strong></p>
+            <p>22EEMCS026</p>
+            <div class="member-contact">
+              <span class="icon-btn" style="cursor:default;opacity:0.7;"><i class="fab fa-linkedin"></i></span>
+              <span class="icon-btn" style="cursor:default;opacity:0.7;"><i class="fab fa-github"></i></span>
+              <span class="icon-btn" style="cursor:default;opacity:0.7;"><i class="fas fa-envelope"></i></span>
+            </div>
+          </div>
+          <div class="team-member">
+            <div class="member-img">
+              <img src="gweca-logo.png" alt="Bhumika Soni"
+                onerror="this.src='https://via.placeholder.com/150x150/3498db/ffffff?text=BS'" />
+            </div>
+            <h3>Bhumika Soni</h3>
+            <p>Team Member</p>
+            <p>22EEMCS022</p>
+            <div class="member-contact">
+              <span class="icon-btn" style="cursor:default;opacity:0.7;"><i class="fab fa-linkedin"></i></span>
+              <span class="icon-btn" style="cursor:default;opacity:0.7;"><i class="fab fa-github"></i></span>
+              <span class="icon-btn" style="cursor:default;opacity:0.7;"><i class="fas fa-envelope"></i></span>
+            </div>
+          </div>
+          <div class="team-member">
+            <div class="member-img">
+              <img src="gweca-logo.png" alt="Bulbul Saini"
+                onerror="this.src='https://via.placeholder.com/150x150/3498db/ffffff?text=BS2'" />
+            </div>
+            <h3>Bulbul Saini</h3>
+            <p>Team Member</p>
+            <p>22EEMCS023</p>
+            <div class="member-contact">
+              <span class="icon-btn" style="cursor:default;opacity:0.7;"><i class="fab fa-linkedin"></i></span>
+              <span class="icon-btn" style="cursor:default;opacity:0.7;"><i class="fab fa-github"></i></span>
+              <span class="icon-btn" style="cursor:default;opacity:0.7;"><i class="fas fa-envelope"></i></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <div class="footer-logo">
+              <img
+                src="gweca-logo.png"
+                alt="gweca-logo"
+                onerror="this.src='https://via.placeholder.com/50x50/ffffff/3498db?text=GWECA'"
+              />
+              <h3>Mahila Engineering College Ajmer</h3>
+            </div>
+            <p>
+              <i class="fas fa-map-marker-alt"></i> Mahila Eng College Ajmer,
+              Rajasthan
+            </p>
+            <p><i class="fas fa-phone"></i> +91 1234567890</p>
+            <p><i class="fas fa-envelope"></i> events@gweca.ac.in</p>
+          </div>
+          <div class="footer-section">
+            <h3>Quick Links</h3>
+            <ul>
+              <li><a href="index.html">Home</a></li>
+              <li><a href="events.html">Events</a></li>
+              <li><a href="admin.html">Admin Panel</a></li>
+              <li><a href="certificate.html">Certificates</a></li>
+              <li><a href="chatbot.html">AI Assistant</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h3>Follow Us</h3>
+            <div class="social-icons">
+              <span class="icon-btn" style="cursor:default;opacity:0.7;"><i class="fab fa-facebook"></i></span>
+              <span class="icon-btn" style="cursor:default;opacity:0.7;"><i class="fab fa-twitter"></i></span>
+              <span class="icon-btn" style="cursor:default;opacity:0.7;"><i class="fab fa-instagram"></i></span>
+              <span class="icon-btn" style="cursor:default;opacity:0.7;"><i class="fab fa-linkedin"></i></span>
+              <span class="icon-btn" style="cursor:default;opacity:0.7;"><i class="fab fa-youtube"></i></span>
+            </div>
+            <div class="accreditation-logos">
+              <img
+                src="nba.jpeg"
+                alt="NBA Accredited"
+                onerror="this.src='https://via.placeholder.com/80x40/ffffff/3498db?text=NBA'"
+              />
+              <img
+                src="naac.jpeg"
+                alt="NAAC"
+                onerror="this.src='https://via.placeholder.com/80x40/ffffff/3498db?text=NAAC'"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>
+            &copy; 2025; Mahila Engineering College, Ajmer Event Management System. All
+            rights reserved.
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <div class="modal-logo">
+          <img
+            src="gweca-logo.png"
+            alt="GWECA Logo"
+            onerror="this.src='https://via.placeholder.com/60x60/3498db/ffffff?text=GWECA'"
+          />
+          <h2>Login to Event Portal</h2>
+        </div>
+        <form id="loginForm" onsubmit="return false;">
+          <div class="form-group">
+            <label for="username">Username/Email</label>
+            <input type="text" id="username" required />
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" required />
+          </div>
+          <div class="form-group">
+            <label for="userType">Login As</label>
+            <select id="userType">
+              <option value="student">Student</option>
+              <option value="organizer">Event Organizer</option>
+              <option value="admin">Admin</option>
+            </select>
+          </div>
+          <button type="submit" class="btn primary">Login</button>
+        </form>
+        <p>
+          Don't have an account? <a href="login page.html" id="registerLink">Register here</a>
+        </p>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

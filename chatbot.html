@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Assistant - College Event Management System</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Chatbot Specific Styles */
+        .chatbot-messages {
+            height: 400px;
+            padding: 20px;
+            overflow-y: auto;
+            background-color: #f8f9fa;
+            border-radius: 0;
+        }
+
+        .message {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            animation: messageSlide 0.3s ease;
+        }
+
+        @keyframes messageSlide {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .bot-message {
+            align-items: flex-start;
+        }
+
+        .user-message {
+            align-items: flex-end;
+        }
+
+        .message-content {
+            max-width: 70%;
+            padding: 15px;
+            border-radius: 20px;
+            position: relative;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .bot-message .message-content {
+            background-color: white;
+            border-top-left-radius: 0;
+            border: 1px solid #e9ecef;
+        }
+
+        .user-message .message-content {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border-top-right-radius: 0;
+        }
+
+        .message-time {
+            font-size: 0.7rem;
+            color: #7f8c8d;
+            margin-top: 5px;
+            padding: 0 10px;
+        }
+
+        .quick-questions {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: white;
+            border-top: 1px solid #eee;
+        }
+
+        .quick-questions p {
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            text-align: center;
+        }
+
+        .quick-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .quick-btn {
+            padding: 8px 15px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            color: #3498db;
+        }
+
+        .quick-btn:hover {
+            background-color: #3498db;
+            color: white;
+            border-color: #3498db;
+            transform: translateY(-2px);
+        }
+
+        .chatbot-input {
+            display: flex;
+            padding: 20px;
+            border-top: 1px solid #eee;
+            background-color: white;
+        }
+
+        .chatbot-input input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 30px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .chatbot-input input:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.1);
+        }
+
+        .chatbot-input button {
+            margin-left: 10px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .chatbot-input button:hover {
+            transform: scale(1.05);
+        }
+
+        /* Scrollbar styling */
+        .chatbot-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .chatbot-messages::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+
+        .chatbot-messages::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 3px;
+        }
+
+        .chatbot-messages::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .chatbot-messages {
+                height: 350px;
+                padding: 15px;
+            }
+            
+            .message-content {
+                max-width: 85%;
+            }
+            
+            .quick-buttons {
+                flex-direction: column;
+            }
+            
+            .quick-btn {
+                text-align: center;
+            }
+            
+            .chatbot-input {
+                padding: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .chatbot-messages {
+                height: 300px;
+            }
+            
+            .message-content {
+                max-width: 90%;
+                padding: 12px;
+            }
+            
+            .chatbot-input input {
+                padding: 10px 12px;
+            }
+            
+            .chatbot-input button {
+                width: 45px;
+                height: 45px;
+            }
+        }
+
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 4px;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #7f8c8d;
+            border-radius: 50%;
+            animation: typingAnimation 1.4s infinite ease-in-out;
+        }
+
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes typingAnimation {
+            0%, 80%, 100% { transform: scale(0.8); opacity: 0.5; }
+            40% { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="logo">
+                <div class="https://www.gweca.ac.in/assets/latest_logo-CERg6eCh.png">GWECA</div>
+                <div>
+                    <h1>Mahila Engineering College Ajmer</h1>
+                    <p>Event Management System</p>
+                </div>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="events.html">Events</a></li>
+                    <li><a href="admin.html">Admin</a></li>
+                    <li><a href="certificate.html">Certificates</a></li>
+                    <li><a href="chatbot.html" class="active">AI Assistant</a></li>
+                    <li><a href="login page.html">Login</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- AI Assistant Section -->
+    <section class="chatbot-page">
+        <div class="container">
+            <h1>AI Event Assistant</h1>
+            <p class="subtitle">Get instant answers to your event-related questions</p>
+            
+            <div class="chatbot-container">
+                <div class="chatbot-header">
+                    <div class="chatbot-avatar">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="chatbot-info">
+                        <h3>Event Assistant</h3>
+                        <p id="botStatus">Online • Ready to help</p>
+                    </div>
+                </div>
+                
+                <div class="chatbot-messages" id="chatMessages">
+                    <div class="message bot-message">
+                        <div class="message-content">
+                            <p>Hello! I'm your AI Event Assistant. I can help you with event registration, certificates, attendance, and any questions about our event management system. How can I assist you today?</p>
+                        </div>
+                        <div class="message-time" id="initialTime">Just now</div>
+                    </div>
+                </div>
+                
+                <div class="quick-questions">
+                    <p>Quick questions you can ask:</p>
+                    <div class="quick-buttons">
+                        <button class="quick-btn" data-question="events">What events are happening?</button>
+                        <button class="quick-btn" data-question="register">How to register?</button>
+                        <button class="quick-btn" data-question="certificate">When will I get my certificate?</button>
+                        <button class="quick-btn" data-question="attendance">How does attendance work?</button>
+                    </div>
+                </div>
+                
+                <div class="chatbot-input">
+                    <input type="text" id="userInput" placeholder="Type your question here...">
+                    <button id="sendMessage" class="btn primary">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <div class="logo-placeholder placeholder-small">GWECA</div>
+                        <h3>Mahila Engineering College Ajmer</h3>
+                    </div>
+                    <p><i class="fas fa-map-marker-alt"></i> Mahila Engineering College Ajmer, Rajasthan</p>
+                    <p><i class="fas fa-phone"></i> +91 1234567890</p>
+                    <p><i class="fas fa-envelope"></i> events@gweca.ac.in</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="events.html">Events</a></li>
+                        <li><a href="admin.html">Admin Panel</a></li>
+                        <li><a href="certificate.html">Certificates</a></li>
+                        <li><a href="chatbot.html">AI Assistant</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Follow Us</h3>
+                    <div class="social-icons">
+                        <span class="icon-btn" style="cursor:default;opacity:0.7;"><i class="fab fa-facebook"></i></span>
+                        <span class="icon-btn" style="cursor:default;opacity:0.7;"><i class="fab fa-twitter"></i></span>
+                        <span class="icon-btn" style="cursor:default;opacity:0.7;"><i class="fab fa-instagram"></i></span>
+                        <span class="icon-btn" style="cursor:default;opacity:0.7;"><i class="fab fa-linkedin"></i></span>
+                        <span class="icon-btn" style="cursor:default;opacity:0.7;"><i class="fab fa-youtube"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Mahila Engineering College Ajmer - Event Management System. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Chatbot functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Chatbot page loaded');
+            initializeChatbot();
+        });
+
+        function initializeChatbot() {
+            console.log('Initializing chatbot...');
+            
+            var chatMessages = document.getElementById('chatMessages');
+            var userInput = document.getElementById('userInput');
+            var sendMessageBtn = document.getElementById('sendMessage');
+            var quickBtns = document.querySelectorAll('.quick-btn');
+            var botStatus = document.getElementById('botStatus');
+            
+            // Update initial message time
+            var initialTime = document.getElementById('initialTime');
+            if (initialTime) {
+                initialTime.textContent = getCurrentTime();
+            }
+
+            // Chatbot knowledge base
+            var botKnowledge = {
+                'greeting': {
+                    patterns: ['hello', 'hi', 'hey', 'good morning', 'good afternoon'],
+                    responses: [
+                        'Hello! How can I help you with college events today?',
+                        'Hi there! Ready to assist you with event management.',
+                        'Hey! What would you like to know about our events?'
+                    ]
+                },
+                'events': {
+                    patterns: ['events', 'what events', 'upcoming events', 'current events'],
+                    responses: [
+                        'We have several exciting events coming up:\n\n• Tech Fest 2023 - Nov 15 (Main Auditorium)\n• Cultural Night - Nov 20 (College Ground)\n• Sports Tournament - Nov 25 (Sports Complex)\n\nYou can register for any event from the Events page!',
+                        'Current events include:\n\n🎯 Tech Fest - Coding competitions & workshops\n🎭 Cultural Night - Music & dance performances\n⚽ Sports Tournament - Inter-department games\n\nCheck the Events page for details and registration.'
+                    ]
+                },
+                'registration': {
+                    patterns: ['register', 'how to register', 'sign up', 'join event'],
+                    responses: [
+                        'To register for any event:\n\n1. Go to the Events page\n2. Find your preferred event\n3. Click the "Register" button\n4. Login to your account\n5. Confirm registration\n\nYou\'ll receive an email confirmation!',
+                        'Event registration is simple:\n\n📝 Browse events on Events page\n✅ Click Register button\n🔐 Login if required\n📧 Get confirmation email\n\nNeed help with specific event registration?'
+                    ]
+                },
+                'certificate': {
+                    patterns: ['certificate', 'when certificate', 'get certificate', 'download certificate'],
+                    responses: [
+                        'Certificates are automatically generated:\n\n⏰ Within 24-48 hours after event\n📄 Available in your Certificates page\n🔗 Includes QR code for verification\n📱 Download as PDF\n\nCheck your Certificates page for status!',
+                        'About certificates:\n\n✅ Auto-generated after event completion\n🕒 Ready within 1-2 days\n📲 Download from Certificates section\n🎯 Includes event details & QR code\n\nDelayed? Contact event organizers.'
+                    ]
+                },
+                'attendance': {
+                    patterns: ['attendance', 'face recognition', 'mark attendance', 'check in'],
+                    responses: [
+                        'Face recognition attendance system:\n\n📸 Uses your webcam for check-in\n🔒 Secure identity verification\n⚡ Quick and contactless\n🌤️ Works best in good lighting\n\nMake sure to allow camera access during events!',
+                        'Our attendance system:\n\n🤖 AI-powered face recognition\n✅ Real-time verification\n🔐 Prevents proxy attendance\n📱 Easy check-in process\n\nTips: Good lighting, clear face view, stable internet.'
+                    ]
+                },
+                'techfest': {
+                    patterns: ['tech fest', 'technical event', 'coding competition'],
+                    responses: [
+                        'Tech Fest 2023 details:\n\n📅 Date: November 15, 2023\n⏰ Time: 10:00 AM - 4:00 PM\n📍 Location: Main Auditorium\n\nActivities:\n• Coding competitions\n• Robotics demo\n• Tech talks\n• Project exhibition\n• Workshops\n\nRegister now on Events page!'
+                    ]
+                },
+                'cultural': {
+                    patterns: ['cultural night', 'cultural event', 'music dance'],
+                    responses: [
+                        'Cultural Night extravaganza:\n\n📅 Date: November 20, 2023\n⏰ Time: 6:00 PM - 10:00 PM\n📍 Location: College Ground\n\nHighlights:\n• Live music performances\n• Dance competitions\n• Drama shows\n• Food stalls\n• Cultural competitions\n\nDon\'t miss this amazing evening!'
+                    ]
+                },
+                'sports': {
+                    patterns: ['sports', 'sports tournament', 'games competition'],
+                    responses: [
+                        'Sports Tournament 2023:\n\n📅 Date: November 25, 2023\n⏰ Time: 9:00 AM - 5:00 PM\n📍 Location: Sports Complex\n\nGames include:\n• Cricket\n• Football\n• Basketball\n• Athletics\n• Badminton\n• Table Tennis\n\nRepresent your department!'
+                    ]
+                },
+                'contact': {
+                    patterns: ['contact', 'help', 'support', 'organizer'],
+                    responses: [
+                        'You can contact us through:\n\n📧 Email: events@gweca.ac.in\n📞 Phone: +91 1234567890\n🏢 Office: Event Coordination Cell\n📍 Location: College Administration Block\n\nOffice hours: 9 AM - 5 PM (Mon-Sat)'
+                    ]
+                },
+                'default': {
+                    responses: [
+                        'I can help you with event registration, certificates, attendance, and event details. Could you please rephrase your question?',
+                        'I specialize in event management queries. Try asking about events, registration, certificates, or attendance!',
+                        'I\'m here to assist with college events. You can ask me about upcoming events, how to register, certificate information, or attendance system.'
+                    ]
+                }
+            };
+
+            function addMessage(message, isUser) {
+                var messageDiv = document.createElement('div');
+                messageDiv.className = 'message ' + (isUser ? 'user-message' : 'bot-message');
+                
+                var messageContent = document.createElement('div');
+                messageContent.className = 'message-content';
+                
+                // Convert line breaks to HTML
+                var formattedMessage = message.replace(/\n/g, '<br>');
+                messageContent.innerHTML = '<p>' + formattedMessage + '</p>';
+                
+                var messageTime = document.createElement('div');
+                messageTime.className = 'message-time';
+                messageTime.textContent = getCurrentTime();
+                
+                messageDiv.appendChild(messageContent);
+                messageDiv.appendChild(messageTime);
+                chatMessages.appendChild(messageDiv);
+                
+                // Scroll to bottom
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+
+            function showTypingIndicator() {
+                var typingDiv = document.createElement('div');
+                typingDiv.className = 'message bot-message';
+                typingDiv.id = 'typingIndicator';
+                
+                var typingContent = document.createElement('div');
+                typingContent.className = 'message-content typing-indicator';
+                typingContent.innerHTML = '<div class="typing-dots"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>';
+                
+                typingDiv.appendChild(typingContent);
+                chatMessages.appendChild(typingDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+
+            function hideTypingIndicator() {
+                var typingIndicator = document.getElementById('typingIndicator');
+                if (typingIndicator) {
+                    typingIndicator.remove();
+                }
+            }
+
+            function getCurrentTime() {
+                var now = new Date();
+                return now.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+            }
+
+            function findBestResponse(userMessage) {
+                var lowerMessage = userMessage.toLowerCase().trim();
+                
+                // Check each category
+                for (var category in botKnowledge) {
+                    if (category === 'default') continue;
+                    
+                    var patterns = botKnowledge[category].patterns;
+                    for (var i = 0; i < patterns.length; i++) {
+                        if (lowerMessage.includes(patterns[i])) {
+                            var responses = botKnowledge[category].responses;
+                            return responses[Math.floor(Math.random() * responses.length)];
+                        }
+                    }
+                }
+                
+                // Check specific keywords for better matching
+                if (lowerMessage.includes('tech') && lowerMessage.includes('fest')) {
+                    return botKnowledge.techfest.responses[0];
+                } else if (lowerMessage.includes('cultural')) {
+                    return botKnowledge.cultural.responses[0];
+                } else if (lowerMessage.includes('sport')) {
+                    return botKnowledge.sports.responses[0];
+                } else if (lowerMessage.includes('hello') || lowerMessage.includes('hi')) {
+                    return botKnowledge.greeting.responses[Math.floor(Math.random() * botKnowledge.greeting.responses.length)];
+                } else if (lowerMessage.includes('register')) {
+                    return botKnowledge.registration.responses[Math.floor(Math.random() * botKnowledge.registration.responses.length)];
+                } else if (lowerMessage.includes('certificate')) {
+                    return botKnowledge.certificate.responses[Math.floor(Math.random() * botKnowledge.certificate.responses.length)];
+                } else if (lowerMessage.includes('attendance') || lowerMessage.includes('face')) {
+                    return botKnowledge.attendance.responses[Math.floor(Math.random() * botKnowledge.attendance.responses.length)];
+                } else if (lowerMessage.includes('contact') || lowerMessage.includes('help')) {
+                    return botKnowledge.contact.responses[0];
+                }
+                
+                // Default response
+                var defaultResponses = botKnowledge.default.responses;
+                return defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
+            }
+
+            function handleUserMessage(message) {
+                if (!message.trim()) return;
+                
+                console.log('User message:', message);
+                addMessage(message, true);
+                
+                // Show typing indicator
+                showTypingIndicator();
+                
+                // Simulate thinking delay
+                setTimeout(function() {
+                    hideTypingIndicator();
+                    
+                    var response = findBestResponse(message);
+                    console.log('Bot response:', response);
+                    addMessage(response, false);
+                    
+                    // Update bot status
+                    if (botStatus) {
+                        botStatus.textContent = 'Online • Last active just now';
+                    }
+                }, 1500 + Math.random() * 1000);
+            }
+
+            // Event listeners
+            if (sendMessageBtn) {
+                sendMessageBtn.addEventListener('click', function() {
+                    var message = userInput.value.trim();
+                    if (message) {
+                        handleUserMessage(message);
+                        userInput.value = '';
+                    }
+                });
+            }
+
+            if (userInput) {
+                userInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        var message = userInput.value.trim();
+                        if (message) {
+                            handleUserMessage(message);
+                            userInput.value = '';
+                        }
+                    }
+                });
+            }
+
+            if (quickBtns) {
+                for (var i = 0; i < quickBtns.length; i++) {
+                    quickBtns[i].addEventListener('click', function() {
+                        var questionType = this.getAttribute('data-question');
+                        var questions = {
+                            'events': 'What events are happening this week?',
+                            'register': 'How do I register for an event?',
+                            'certificate': 'When will I receive my certificate?',
+                            'attendance': 'How does face recognition attendance work?'
+                        };
+                        handleUserMessage(questions[questionType]);
+                    });
+                }
+            }
+
+            // Auto-focus on input
+            if (userInput) {
+                setTimeout(function() {
+                    userInput.focus();
+                }, 1000);
+            }
+
+            console.log('Chatbot initialized successfully');
+        }
+
+        // Add placeholder logo styles if not in main CSS
+        var style = document.createElement('style');
+        style.textContent = `
+            .logo-placeholder {
+                background: linear-gradient(45deg, #3498db, #2c3e50);
+                color: white;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: bold;
+                border-radius: 8px;
+            }
+            .placeholder-small {
+                width: 60px;
+                height: 60px;
+                font-size: 0.8rem;
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
